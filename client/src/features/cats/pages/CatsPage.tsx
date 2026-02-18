@@ -5,7 +5,7 @@ import CatsHero from "../components/CatsHero";
 import CatsSection from "../components/CatsSection";
 import CatsFiltersBar from "../components/CatsFiltersBar";
 import { mockCats } from "../data/mockCats";
-import { useCatSearch } from "../hooks/useCatFilters";
+import { useCatSearch } from "../hooks/useCatSearch";
 import type { AgeFilter } from "../components/AgeSelect";
 import type { LocationFilter } from "../components/LocationSelect";
 import { matchesAgeFilter } from "../hooks/matchAge";
