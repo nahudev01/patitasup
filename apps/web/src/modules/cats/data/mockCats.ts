@@ -3,6 +3,7 @@ import type { Cat } from "../types";
 export const mockCats: Cat[] = [
   {
     id: "1",
+    slug: "copito",
     name: "Copito",
     image: "/cats/cat1.jpg",
     sex: "male",
@@ -14,6 +15,7 @@ export const mockCats: Cat[] = [
   },
   {
     id: "2",
+    slug: "milo",
     name: "Milo",
     image: "/cats/cat2.jpg",
     sex: "male",
@@ -25,6 +27,7 @@ export const mockCats: Cat[] = [
   },
   {
     id: "3",
+    slug: "nina",
     name: "Nina",
     image: "/cats/cat3.jpg",
     sex: "female",
@@ -36,6 +39,7 @@ export const mockCats: Cat[] = [
   },
   {
     id: "4",
+    slug: "luna",
     name: "Luna",
     image: "/cats/cat1.jpg",
     sex: "female",
@@ -47,6 +51,7 @@ export const mockCats: Cat[] = [
   },
   {
     id: "5",
+    slug: "simba",
     name: "Simba",
     image: "/cats/cat2.jpg",
     sex: "male",
@@ -58,6 +63,7 @@ export const mockCats: Cat[] = [
   },
   {
     id: "6",
+    slug: "olivia",
     name: "Olivia",
     image: "/cats/cat3.jpg",
     sex: "female",
@@ -69,6 +75,7 @@ export const mockCats: Cat[] = [
   },
   {
     id: "7",
+    slug: "toby",
     name: "Toby",
     image: "/cats/cat1.jpg",
     sex: "male",
@@ -80,6 +87,7 @@ export const mockCats: Cat[] = [
   },
   {
     id: "8",
+    slug: "mora",
     name: "Mora",
     image: "/cats/cat2.jpg",
     sex: "female",
@@ -91,6 +99,7 @@ export const mockCats: Cat[] = [
   },
   {
     id: "9",
+    slug: "mike",
     name: "Mike",
     image: "/cats/cat3.jpg",
     sex: "male",

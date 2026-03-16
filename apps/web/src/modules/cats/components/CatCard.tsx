@@ -1,5 +1,6 @@
-import { HiOutlineLocationMarker } from "react-icons/hi";
 import Image from "next/image";
+import Link from "next/link";
+import { HiOutlineLocationMarker } from "react-icons/hi";
 import CatInfoChip from "./CatInfoChip";
 import type { Cat } from "../types";
 
@@ -55,12 +56,12 @@ const CatCard = ({ cat }: Props) => {
             </div>
           </div>
 
-          <button
-            type="button"
+          <Link
+            href={`/adoptar/${cat.slug}`}
             className="rounded-full bg-[#0F172A] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
           >
             Adoptar
-          </button>
+          </Link>
         </div>
       </div>
     </article>
