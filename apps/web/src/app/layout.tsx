@@ -1,7 +1,6 @@
 import "@/app/globals.css";
-import Navbar from "@/shared/components/Navbar";
-import Footer from "@/shared/components/Footer";
 import { Poppins } from "next/font/google";
+import LayoutShell from "@/shared/components/LayoutShell";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -9,14 +8,11 @@ const poppins = Poppins({
   display: "swap",
 });
 
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
       <body className={poppins.className}>
-        <Navbar />
-        {children}
-        <Footer />
+        <LayoutShell>{children}</LayoutShell>
       </body>
     </html>
   );
