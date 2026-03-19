@@ -61,7 +61,7 @@ const Navbar = () => {
               Donar
             </Link>
             <Link
-              href="/registro"
+              href="/register"
               className="rounded-lg bg-[#292B2D] px-4 py-2 text-[15px] font-semibold text-white transition shadow-sm hover:opacity-90"
             >
               Publicar gato
@@ -118,7 +118,7 @@ const Navbar = () => {
               Donar
             </Link>
             <Link
-              href="/registro"
+              href="/register"
               onClick={closeMenu}
               className="block w-full rounded-full bg-white py-2 text-center font-semibold text-[#7061F0]"
             >
