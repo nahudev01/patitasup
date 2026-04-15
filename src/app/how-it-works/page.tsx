@@ -5,10 +5,10 @@ import { howItWorksCards } from "@/features/how-it-works/data/howItWorksData";
 
 export default function Page() {
   return (
-    <div className="min-h-screen bg-[#F6F7F9]">
-      <main>
-        <PawsSection className="h-[472px]">
-          <div className="mx-auto flex h-full max-w-6xl items-start justify-center px-4 pt-18 sm:pt-22 lg:pt-26 lg:px-8">
+    <div className="min-h-screen bg-[#F6F7F9] flex flex-col">
+      <main className="flex-1 flex flex-col">
+        <PawsSection className="py-12 md:py-20 lg:py-28">
+          <div className="mx-auto flex h-full w-full max-w-4xl items-center justify-center px-4 lg:px-8">
             <Hero
               badgeText="Cómo funciona"
               variant="page"
@@ -18,7 +18,7 @@ export default function Page() {
           </div>
         </PawsSection>
 
-        <section className="relative z-10 mx-auto -mt-16 pb-24 sm:-mt-20 lg:-mt-24">
+        <section className="relative z-10 mx-auto w-full max-w-6xl -mt-10 md:-mt-14 lg:-mt-20 pb-12 md:pb-20 lg:pb-28 px-4">
           <HowItWorksColumns cards={howItWorksCards} />
         </section>
       </main>
