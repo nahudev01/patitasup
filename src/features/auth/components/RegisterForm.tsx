@@ -1,33 +1,19 @@
 "use client";
 
-import {
-  useState,
-  type ChangeEvent,
-  type HTMLInputTypeAttribute,
-} from "react";
+import { useActionState, useState, type HTMLInputTypeAttribute } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
+import { registerAction } from "@/features/auth/actions";
+import { INITIAL_AUTH_ACTION_STATE } from "@/features/auth/types";
+
 const RegisterForm = () => {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
+  const [state, formAction, pending] = useActionState(
+    registerAction,
+    INITIAL_AUTH_ACTION_STATE,
+  );
   const [showPassword, setShowPassword] = useState(false);
-
-  const handleChange =
-    (field: keyof typeof form) =>
-    (e: ChangeEvent<HTMLInputElement>) => {
-      setForm((prev) => ({ ...prev, [field]: e.target.value }));
-    };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(form);
-  };
 
   return (
     <div className="w-full max-w-[520px]">
@@ -56,24 +42,38 @@ const RegisterForm = () => {
 
       <div className="mb-7 h-px w-full bg-[#ececf2]" />
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form action={formAction} className="space-y-5">
+        {state.message ? (
+          <div
+            className={`rounded-md px-4 py-3 text-[14px] ${
+              state.status === "success"
+                ? "border border-[#16a34a]/20 bg-[#f0fdf4] text-[#166534]"
+                : "border border-[#ef4444]/20 bg-[#fef2f2] text-[#b91c1c]"
+            }`}
+          >
+            {state.message}
+          </div>
+        ) : null}
+
         <Input
           id="name"
+          name="name"
           label="Nombre del refugio o rescatista"
           placeholder="Ej: Refugio San Roque"
-          value={form.name}
-          onChange={handleChange("name")}
+          defaultValue={state.values?.name}
           autoComplete="name"
+          error={state.fieldErrors?.name?.[0]}
         />
 
         <Input
           id="email"
+          name="email"
           label="Correo electrónico"
           type="email"
           placeholder="Ej: contacto@refugio.com"
-          value={form.email}
-          onChange={handleChange("email")}
+          defaultValue={state.values?.email}
           autoComplete="email"
+          error={state.fieldErrors?.email?.[0]}
         />
 
         <div>
@@ -87,13 +87,13 @@ const RegisterForm = () => {
           <div className="relative">
             <input
               id="password"
+              name="password"
               type={showPassword ? "text" : "password"}
               placeholder="Al menos 8 caracteres"
-              value={form.password}
-              onChange={handleChange("password")}
               autoComplete="new-password"
               required
               minLength={8}
+              aria-invalid={Boolean(state.fieldErrors?.password?.[0])}
               className="h-[48px] w-full rounded-md border border-[#d9dbe8] bg-white px-4 pr-11 text-[14px] text-[#111827] outline-none placeholder:text-[#9ca3af] focus:border-[#7061F0] focus:ring-2 focus:ring-[#7061F0]/15"
             />
 
@@ -108,13 +108,20 @@ const RegisterForm = () => {
               {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
             </button>
           </div>
+
+          {state.fieldErrors?.password?.[0] ? (
+            <p className="mt-2 text-[13px] text-[#dc2626]">
+              {state.fieldErrors.password[0]}
+            </p>
+          ) : null}
         </div>
 
         <button
           type="submit"
+          disabled={pending}
           className="h-[46px] w-full rounded-md bg-[#7061F0] text-[14px] font-medium text-white transition hover:opacity-95"
         >
-          Crear cuenta
+          {pending ? "Creando cuenta..." : "Crear cuenta"}
         </button>
       </form>
 
@@ -133,22 +140,24 @@ const RegisterForm = () => {
 
 type InputProps = {
   id: string;
+  name: string;
   label: string;
   type?: HTMLInputTypeAttribute;
   placeholder: string;
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  defaultValue?: string;
   autoComplete?: string;
+  error?: string;
 };
 
 const Input = ({
   id,
+  name,
   label,
   type = "text",
   placeholder,
-  value,
-  onChange,
+  defaultValue,
   autoComplete,
+  error,
 }: InputProps) => {
   return (
     <div>
@@ -161,14 +170,17 @@ const Input = ({
 
       <input
         id={id}
+        name={name}
         type={type}
         placeholder={placeholder}
-        value={value}
-        onChange={onChange}
+        defaultValue={defaultValue}
         autoComplete={autoComplete}
         required
+        aria-invalid={Boolean(error)}
         className="h-[48px] w-full rounded-md border border-[#d9dbe8] bg-white px-4 text-[14px] text-[#111827] outline-none placeholder:text-[#9ca3af] focus:border-[#7061F0] focus:ring-2 focus:ring-[#7061F0]/15"
       />
+
+      {error ? <p className="mt-2 text-[13px] text-[#dc2626]">{error}</p> : null}
     </div>
   );
 };
