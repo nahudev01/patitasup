@@ -19,7 +19,7 @@ export default function Sidebar() {
       <div className="flex h-full flex-col px-5 py-7">
         <div className="mb-10 flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#7061F0]">
-            <Image src="/logo.png" alt="PatitasUp" width={24} height={24} className="h-6 w-6" />
+            <Image src="/logo.webp" alt="PatitasUp" width={24} height={24} className="h-6 w-6" />
           </div>
           <span className="text-[18px] font-semibold text-white">PatitasUp</span>
         </div>

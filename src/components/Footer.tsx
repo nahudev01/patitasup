@@ -30,7 +30,7 @@ const Footer = () => {
           <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
             <div className="flex items-center gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#7061F0]">
-                <Image src="/logo.png" alt="PatitasUp" width={24} height={24} className="h-6 w-6" />
+                <Image src="/logo.webp" alt="PatitasUp" width={24} height={24} className="h-6 w-6" />
               </div>
               <span className="text-lg font-semibold text-white">PatitasUp</span>
             </div>

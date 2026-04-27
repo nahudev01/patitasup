@@ -1,11 +1,9 @@
-import { config as loadEnv } from "dotenv";
+import "dotenv/config";
 
 import { defineConfig } from "prisma/config";
 
-loadEnv();
-
-const env = (globalThis as { process?: { env: Record<string, string | undefined> } }).process
-  ?.env ?? { };
+const env = process.env;
+const migrationUrl = env.PRISMA_MIGRATE_DATABASE_URL ?? env.DATABASE_URL ?? "";
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
@@ -13,6 +11,7 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: env.DATABASE_URL,
+    url: migrationUrl,
+    shadowDatabaseUrl: env.SHADOW_DATABASE_URL,
   },
 });

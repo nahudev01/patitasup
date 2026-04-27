@@ -26,7 +26,7 @@ const LoginForm = () => {
       <div className="mb-5 flex items-center gap-3">
         <div className="flex h-[100px] w-[100px] items-center justify-center rounded-2xl bg-[#7061F0] shadow-[0_12px_30px_rgba(112,97,240,0.25)]">
           <Image
-            src="/logo.png"
+            src="/logo.webp"
             alt="PatitasUp"
             width={56}
             height={56}
