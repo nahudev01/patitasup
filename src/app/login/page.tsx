@@ -1,6 +1,18 @@
-import LoginCard from "@/features/auth/components/LoginCard";
+import { redirect } from "next/navigation";
 
-export default function Page() {
+import LoginCard from "@/features/auth/components/LoginCard";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
+
+export default async function Page() {
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    redirect("/perfil");
+  }
+
   return (
     <main className="h-screen w-screen overflow-hidden bg-[#f3f4f6]">
       <LoginCard />

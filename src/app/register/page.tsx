@@ -1,6 +1,18 @@
-import RegisterCard from "@/features/auth/components/RegisterCard";
+import { redirect } from "next/navigation";
 
-export default function Page() {
+import RegisterCard from "@/features/auth/components/RegisterCard";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
+
+export default async function Page() {
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    redirect("/perfil");
+  }
+
   return (
     <main className="h-screen w-screen overflow-hidden bg-[#f3f4f6]">
       <RegisterCard />
