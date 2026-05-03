@@ -29,7 +29,7 @@ const Navbar = () => {
       <div className="w-full px-6 py-5 lg:px-16">
         <div className="relative flex w-full items-center justify-between">
           <Link href="/" className="flex shrink-0 items-center gap-2">
-            <Image src="/logo.png" alt="PatitasUp" width={160} height={44} className="h-10 w-auto md:h-11" priority />
+            <Image src="/logo.webp" alt="PatitasUp" width={160} height={44} className="h-10 w-auto md:h-11" priority />
           </Link>
 
           <ul className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 text-[15px] md:flex">
@@ -84,7 +84,7 @@ const Navbar = () => {
       >
         <div className="flex h-full flex-col px-6 pb-8 pt-6 text-white">
           <div className="flex items-center justify-between">
-            <Image src="/logo.png" alt="PatitasUp" width={140} height={36} className="h-9 w-auto" priority />
+            <Image src="/logo.webp" alt="PatitasUp" width={140} height={36} className="h-9 w-auto" priority />
             <button onClick={closeMenu} className="text-3xl">
               <FiX />
             </button>
