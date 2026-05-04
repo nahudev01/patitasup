@@ -1,16 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+import { DASHBOARD_HOME_HREF, isDashboardRoute } from "@/components/layout/dashboardRoutes";
 import { getSupabasePublicEnv } from "@/lib/env";
 
 const AUTH_ROUTES = new Set(["/login", "/register"]);
-const PROTECTED_ROUTE_PREFIXES = ["/perfil", "/mis-publicaciones", "/solicitudes"];
-
-function isProtectedRoute(pathname: string) {
-  return PROTECTED_ROUTE_PREFIXES.some(
-    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
-  );
-}
 
 function withForwardedCookies(baseResponse: NextResponse, redirectResponse: NextResponse) {
   baseResponse.cookies.getAll().forEach((cookie) => {
@@ -47,7 +41,7 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user && isProtectedRoute(request.nextUrl.pathname)) {
+  if (!user && isDashboardRoute(request.nextUrl.pathname)) {
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = "/login";
     redirectUrl.search = "";
@@ -61,7 +55,7 @@ export async function updateSession(request: NextRequest) {
 
   if (user && AUTH_ROUTES.has(request.nextUrl.pathname)) {
     const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = "/perfil";
+    redirectUrl.pathname = DASHBOARD_HOME_HREF;
     redirectUrl.search = "";
 
     return withForwardedCookies(response, NextResponse.redirect(redirectUrl));

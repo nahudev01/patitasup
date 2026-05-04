@@ -8,7 +8,7 @@ import { FiChevronDown, FiLogOut, FiMenu, FiUser, FiX } from "react-icons/fi";
 
 import { signOutFromBrowser } from "@/features/auth/lib/signOutApp";
 
-import { isDashboardRoute } from "./dashboardRoutes";
+import { DASHBOARD_NAV_ITEMS, isDashboardRoute } from "./dashboardRoutes";
 
 export type NavUser = {
   email: string;
@@ -19,12 +19,6 @@ const publicNav = [
   { label: "Inicio", href: "/" },
   { label: "Cómo funciona", href: "/how-it-works" },
   { label: "Contacto", href: "/contact" },
-] as const;
-
-const dashboardNav = [
-  { label: "Mi perfil", href: "/perfil" },
-  { label: "Mis publicaciones", href: "/mis-publicaciones" },
-  { label: "Solicitudes", href: "/solicitudes" },
 ] as const;
 
 function getInitials(profileName: string) {
@@ -157,7 +151,7 @@ export default function AppNavbar({ navUser }: Props) {
   const initials = navUser ? getInitials(navUser.profileName) : "";
 
   const mobilePrimaryLinks = inDashboard
-    ? dashboardNav.map((item) => ({ ...item, variant: "dashboard" as const }))
+    ? DASHBOARD_NAV_ITEMS.map((item) => ({ ...item, variant: "dashboard" as const }))
     : publicNav.map((item) => ({ ...item, variant: "public" as const }));
 
   return (
@@ -190,7 +184,7 @@ export default function AppNavbar({ navUser }: Props) {
             </ul>
           ) : (
             <ul className="flex flex-wrap items-center justify-center gap-1">
-              {dashboardNav.map(({ label, href }) => (
+              {DASHBOARD_NAV_ITEMS.map(({ label, href }) => (
                 <li key={href}>
                   <Link
                     href={href}
