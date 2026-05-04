@@ -273,7 +273,7 @@ export default function AppNavbar({ navUser }: Props) {
             </>
           ) : (
             <>
-              <div className="hidden items-center gap-3 sm:flex">
+              <div className="hidden items-center gap-3 md:flex">
                 <Link
                   href="/login"
                   className="rounded-xl px-3 py-2 text-[15px] font-medium text-[#374151] transition hover:bg-[#f3f4f6]"
@@ -289,7 +289,7 @@ export default function AppNavbar({ navUser }: Props) {
               </div>
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#ececf2] text-2xl text-[#374151] sm:hidden"
+                className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#ececf2] text-2xl text-[#374151] md:hidden"
                 aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
                 onClick={() => setMobileOpen(true)}
               >
