@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 
+import SignOutButton from "@/features/auth/components/SignOutButton";
 import { getSessionProfile } from "@/features/auth/lib/getSessionProfile";
 
 function InfoCard({ label, value, mono = false }: { label: string; value: string; mono?: boolean }) {
@@ -57,6 +58,10 @@ export default async function Page() {
               <p>Nombre guardado: {profile?.displayName ?? profileName}</p>
               <p>Email guardado: {profile?.email ?? user.email ?? "Sin correo"}</p>
             </div>
+
+            <SignOutButton className="mt-8 w-full rounded-xl border border-white/25 bg-white/10 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/15">
+              Cerrar sesión
+            </SignOutButton>
           </aside>
         </div>
       </section>

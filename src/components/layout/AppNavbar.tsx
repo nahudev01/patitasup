@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FiChevronDown, FiLogOut, FiMenu, FiUser, FiX } from "react-icons/fi";
 
-import { createClient } from "@/lib/supabase/client";
+import { signOutFromBrowser } from "@/features/auth/lib/signOutApp";
 
 import { isDashboardRoute } from "./dashboardRoutes";
 
@@ -149,26 +149,10 @@ export default function AppNavbar({ navUser }: Props) {
   const closeMobile = () => setMobileOpen(false);
 
   const handleLogout = useCallback(async () => {
-    try {
-      const supabase = createClient();
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        console.error("[logout] signOut failed:", error.message, error);
-        await fetch("/auth/signout", { method: "POST", credentials: "same-origin" });
-      }
-    } catch (e) {
-      console.error("[logout] client signOut failed, trying server route:", e);
-      try {
-        await fetch("/auth/signout", { method: "POST", credentials: "same-origin" });
-      } catch (routeErr) {
-        console.error("[logout] POST /auth/signout failed:", routeErr);
-      }
-    } finally {
+    await signOutFromBrowser(router, () => {
       setDropdownOpen(false);
       setMobileOpen(false);
-      router.refresh();
-      router.push("/");
-    }
+    });
   }, [router]);
 
   const linkInactive = "font-medium text-[#4b5563] transition hover:text-[#7061F0]";
