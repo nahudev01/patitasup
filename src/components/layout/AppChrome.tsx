@@ -6,7 +6,6 @@ import type { ReactNode } from "react";
 import Footer from "@/components/Footer";
 
 import AppNavbar, { type NavUser } from "./AppNavbar";
-import { FIXED_NAVBAR_CONTENT_OFFSET_CLASS } from "./fixedNavbarLayout";
 import { isDashboardRoute } from "./dashboardRoutes";
 
 const AUTH_PATHS = ["/login", "/register"];
@@ -30,7 +29,7 @@ export default function AppChrome({ children, navUser }: Props) {
   return (
     <>
       <AppNavbar navUser={navUser} />
-      <div className={`min-h-0 ${FIXED_NAVBAR_CONTENT_OFFSET_CLASS}`}>
+      <div className="min-h-0 pt-[61px] sm:pt-[65px]">
         {children}
         {showFooter && <Footer />}
       </div>
