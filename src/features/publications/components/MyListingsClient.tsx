@@ -13,13 +13,13 @@ import StatusTabs from "./StatusTabs";
 
 const PAGE_SIZE = 10;
 
-type MisPublicacionesClientProps = {
+type MyListingsClientProps = {
   publications?: Publication[];
 };
 
-export default function MisPublicacionesClient({
+export default function MyListingsClient({
   publications = MOCK_PUBLICATIONS,
-}: MisPublicacionesClientProps) {
+}: MyListingsClientProps) {
   const [filter, setFilter] = useState<PublicationFilter>("todas");
   const [page, setPage] = useState(1);
 
@@ -40,13 +40,9 @@ export default function MisPublicacionesClient({
     setPage(1);
   };
 
-  const handleEdit = (_row: Publication) => {
-    /* Mock: connect to edit flow when backend is ready */
-  };
+  const handleEdit = (_row: Publication) => {};
 
-  const handleDelete = (_row: Publication) => {
-    /* Mock: connect to delete flow when backend is ready */
-  };
+  const handleDelete = (_row: Publication) => {};
 
   const showingCount = pageRows.length;
 
