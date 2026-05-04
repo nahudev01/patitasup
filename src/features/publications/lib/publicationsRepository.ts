@@ -5,9 +5,11 @@ import {
   PublicationAgeUnit as PrismaAgeUnit,
   PublicationSex as PrismaSex,
   PublicationStatus as PrismaStatus,
+  type Profile,
   type Publication as PrismaPublication,
 } from "@prisma/client";
 
+import type { Cat } from "@/features/cats/types";
 import { prisma } from "@/lib/prisma";
 
 import type { Publication, PublicationStatus } from "../types";
@@ -28,6 +30,11 @@ const statusByPrismaStatus: Record<PrismaStatus, PublicationStatus> = {
 const sexByPrismaSex: Record<PrismaSex, string> = {
   [PrismaSex.MALE]: "Macho",
   [PrismaSex.FEMALE]: "Hembra",
+};
+
+const catSexByPrismaSex: Record<PrismaSex, Cat["sex"]> = {
+  [PrismaSex.MALE]: "male",
+  [PrismaSex.FEMALE]: "female",
 };
 
 const prismaAgeUnitByInput: Record<CreatePublicationInput["ageUnit"], PrismaAgeUnit> = {
@@ -77,6 +84,17 @@ function normalizeInstagram(value: string | undefined) {
   return value.startsWith("@") ? value : `@${value}`;
 }
 
+function getFallbackImage(rowId: string) {
+  const imageNumber =
+    (Array.from(rowId).reduce((total, char) => total + char.charCodeAt(0), 0) % 3) + 1;
+
+  return `/cats/cat${imageNumber}.jpg`;
+}
+
+type PublicationWithAuthor = PrismaPublication & {
+  authorProfile: Pick<Profile, "displayName">;
+};
+
 export function mapPublicationRow(row: PrismaPublication): Publication {
   return {
     id: row.id,
@@ -85,6 +103,20 @@ export function mapPublicationRow(row: PrismaPublication): Publication {
     sex: sexByPrismaSex[row.sex],
     status: statusByPrismaStatus[row.status],
     date: dateFormatter.format(row.publishedAt ?? row.createdAt),
+  };
+}
+
+export function mapPublicationRowToCat(row: PublicationWithAuthor): Cat {
+  return {
+    id: row.id,
+    slug: row.slug,
+    name: row.petName,
+    image: row.imageUrl ?? getFallbackImage(row.id),
+    sex: catSexByPrismaSex[row.sex],
+    ageLabel: formatAge(row.ageValue, row.ageUnit),
+    locationLabel: row.location,
+    description: row.description,
+    rescueInstagram: row.rescueInstagram ?? row.authorProfile.displayName,
   };
 }
 
@@ -97,6 +129,42 @@ export async function listPublicationsForProfile(profileId: string) {
   });
 
   return rows.map(mapPublicationRow);
+}
+
+export async function listPublishedPublicationCats() {
+  const rows = await prisma.publication.findMany({
+    where: {
+      status: PrismaStatus.ACTIVE,
+    },
+    include: {
+      authorProfile: {
+        select: {
+          displayName: true,
+        },
+      },
+    },
+    orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+  });
+
+  return rows.map(mapPublicationRowToCat);
+}
+
+export async function findPublishedPublicationCatBySlug(slug: string) {
+  const row = await prisma.publication.findFirst({
+    where: {
+      slug,
+      status: PrismaStatus.ACTIVE,
+    },
+    include: {
+      authorProfile: {
+        select: {
+          displayName: true,
+        },
+      },
+    },
+  });
+
+  return row ? mapPublicationRowToCat(row) : null;
 }
 
 export async function createPublicationForProfile(
