@@ -21,12 +21,6 @@ const publicNav = [
   { label: "Contacto", href: "/contact" },
 ] as const;
 
-const mobilePublicOverlayLinks = [
-  { label: "Inicio", href: "/" },
-  { label: "Cómo funciona", href: "/how-it-works" },
-  { label: "Contacto", href: "/contact" },
-] as const;
-
 const dashboardNav = [
   { label: "Mi perfil", href: "/perfil" },
   { label: "Mis publicaciones", href: "/mis-publicaciones" },
@@ -164,7 +158,7 @@ export default function AppNavbar({ navUser }: Props) {
 
   const mobilePrimaryLinks = inDashboard
     ? dashboardNav.map((item) => ({ ...item, variant: "dashboard" as const }))
-    : mobilePublicOverlayLinks.map((item) => ({ ...item, variant: "public" as const }));
+    : publicNav.map((item) => ({ ...item, variant: "public" as const }));
 
   return (
     <>
