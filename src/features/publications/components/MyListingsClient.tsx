@@ -40,9 +40,9 @@ export default function MyListingsClient({
     setPage(1);
   };
 
-  const handleEdit = (_row: Publication) => {};
+  const handleEdit = () => {};
 
-  const handleDelete = (_row: Publication) => {};
+  const handleDelete = () => {};
 
   const showingCount = pageRows.length;
 
