@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getSupabasePublicEnv } from "@/lib/env";
 
 const AUTH_ROUTES = new Set(["/login", "/register"]);
-const PROTECTED_ROUTE_PREFIXES = ["/perfil"];
+const PROTECTED_ROUTE_PREFIXES = ["/perfil", "/mis-publicaciones", "/solicitudes"];
 
 function isProtectedRoute(pathname: string) {
   return PROTECTED_ROUTE_PREFIXES.some(

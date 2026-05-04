@@ -1,6 +1,8 @@
 import "./globals.css";
 import { Poppins } from "next/font/google";
-import LayoutShell from "@/components/LayoutShell";
+
+import AppChrome from "@/components/layout/AppChrome";
+import { getSessionProfile } from "@/features/auth/lib/getSessionProfile";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -8,11 +10,16 @@ const poppins = Poppins({
   display: "swap",
 });
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const session = await getSessionProfile();
+  const navUser = session
+    ? { email: session.user.email ?? "", profileName: session.profileName }
+    : null;
+
   return (
     <html lang="es">
       <body className={poppins.className}>
-        <LayoutShell>{children}</LayoutShell>
+        <AppChrome navUser={navUser}>{children}</AppChrome>
       </body>
     </html>
   );

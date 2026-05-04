@@ -1,38 +1,37 @@
 import { z } from "zod";
 
-const publicEnvSchema = z
-  .object({
-    NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
-    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().min(1).optional(),
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1).optional(),
-  })
-  .superRefine((env, ctx) => {
-    if (!env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY && !env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message:
-          "Set NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY or NEXT_PUBLIC_SUPABASE_ANON_KEY.",
-        path: ["NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY"],
-      });
-    }
-  });
+const supabasePublicSchema = z.object({
+  supabaseUrl: z
+    .string()
+    .min(1, "NEXT_PUBLIC_SUPABASE_URL is required (see .env.example).")
+    .url("NEXT_PUBLIC_SUPABASE_URL must be a valid URL."),
+  supabasePublishableKey: z
+    .string()
+    .min(
+      1,
+      "Set NEXT_PUBLIC_SUPABASE_ANON_KEY or NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY (Supabase Dashboard → Project Settings → API).",
+    ),
+});
 
-function formatEnvError(error: z.ZodError) {
-  return error.issues.map((issue) => issue.message).join(" ");
+function trimOrEmpty(value: string | undefined): string {
+  return typeof value === "string" ? value.trim() : "";
 }
 
 export function getSupabasePublicEnv() {
-  const parsed = publicEnvSchema.safeParse(process.env);
+  const supabaseUrl = trimOrEmpty(process.env.NEXT_PUBLIC_SUPABASE_URL);
+  const publishable = trimOrEmpty(process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+  const anon = trimOrEmpty(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+  const supabasePublishableKey = publishable || anon;
+
+  const parsed = supabasePublicSchema.safeParse({
+    supabaseUrl,
+    supabasePublishableKey,
+  });
 
   if (!parsed.success) {
-    throw new Error(`Invalid Supabase environment variables. ${formatEnvError(parsed.error)}`);
+    const msg = parsed.error.issues.map((i) => i.message).join(" ");
+    throw new Error(`Invalid Supabase environment variables. ${msg}`);
   }
 
-  return {
-    supabaseUrl: parsed.data.NEXT_PUBLIC_SUPABASE_URL,
-    supabasePublishableKey:
-      parsed.data.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
-      parsed.data.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
-      "",
-  };
+  return parsed.data;
 }
