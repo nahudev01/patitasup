@@ -2,7 +2,7 @@ import Hero from "@/components/Hero";
 import PawsSection from "@/components/PawsSection";
 import AdoptionForm from "@/features/cats/components/AdoptionForm";
 import { mockCats } from "@/features/cats/data/mockCats";
-import { findPublishedPublicationCatBySlug } from "@/features/publications/lib/publicationsRepository";
+import { findPublishedListingCatBySlug } from "@/features/listings/lib/listingsRepository";
 
 export const dynamic = "force-dynamic";
 
@@ -14,8 +14,8 @@ type Props = {
 
 export default async function Page({ params }: Props) {
   const { slug } = await params;
-  const publicationCat = await findPublishedPublicationCatBySlug(slug);
-  const cat = publicationCat ?? mockCats.find((item) => item.slug === slug);
+  const listingCat = await findPublishedListingCatBySlug(slug);
+  const cat = listingCat ?? mockCats.find((item) => item.slug === slug);
 
   if (!cat) {
     return <div>Gatito no encontrado</div>;

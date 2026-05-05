@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { FiArrowLeft } from "react-icons/fi";
 
-import NewPublicationForm from "@/features/publications/components/NewPublicationForm";
-import SectionTitle from "@/features/publications/components/SectionTitle";
-import { secondaryCtaClass } from "@/features/publications/lib/publicationStyles";
+import NewListingForm from "@/features/listings/components/NewListingForm";
+import SectionTitle from "@/features/listings/components/SectionTitle";
+import { secondaryCtaClass } from "@/features/listings/lib/listingStyles";
 
 export default function Page() {
   return (
@@ -15,14 +15,14 @@ export default function Page() {
               <SectionTitle
                 title="Nueva publicación"
                 action={
-                  <Link href="/mis-publicaciones" className={`${secondaryCtaClass} w-full justify-center sm:w-auto`}>
+                  <Link href="/my-listings" className={`${secondaryCtaClass} w-full justify-center sm:w-auto`}>
                     <FiArrowLeft className="h-5 w-5" aria-hidden />
                     <span>Volver</span>
                   </Link>
                 }
               />
 
-              <NewPublicationForm />
+              <NewListingForm />
             </div>
           </div>
         </div>

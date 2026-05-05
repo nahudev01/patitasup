@@ -5,28 +5,28 @@ import { useMemo, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 
 import type { Publication, PublicationFilter } from "../types";
-import { primaryCtaClass } from "../lib/publicationStyles";
+import { primaryCtaClass } from "../lib/listingStyles";
 import PaginationControls from "./PaginationControls";
-import PublicationsTable from "./PublicationsTable";
+import ListingsTable from "./ListingsTable";
 import SectionTitle from "./SectionTitle";
 import StatusTabs from "./StatusTabs";
 
 const PAGE_SIZE = 10;
 
 type MyListingsClientProps = {
-  publications?: Publication[];
+  listings?: Publication[];
 };
 
 export default function MyListingsClient({
-  publications = [],
+  listings = [],
 }: MyListingsClientProps) {
   const [filter, setFilter] = useState<PublicationFilter>("todas");
   const [page, setPage] = useState(1);
 
   const filtered = useMemo(() => {
-    if (filter === "todas") return publications;
-    return publications.filter((p) => p.status === filter);
-  }, [publications, filter]);
+    if (filter === "todas") return listings;
+    return listings.filter((listing) => listing.status === filter);
+  }, [listings, filter]);
 
   const totalResults = filtered.length;
   const totalPages = Math.max(1, Math.ceil(totalResults / PAGE_SIZE));
@@ -53,7 +53,7 @@ export default function MyListingsClient({
           title="Mis publicaciones"
           action={
             <Link
-              href="/mis-publicaciones/nueva"
+              href="/my-listings/new"
               className={`${primaryCtaClass} w-full justify-center sm:w-auto`}
             >
               <span>Nueva publicación</span>
@@ -64,7 +64,7 @@ export default function MyListingsClient({
 
         <StatusTabs value={filter} onChange={handleFilterChange} />
 
-        <PublicationsTable
+        <ListingsTable
           rows={pageRows}
           onEdit={handleEdit}
           onDelete={handleDelete}

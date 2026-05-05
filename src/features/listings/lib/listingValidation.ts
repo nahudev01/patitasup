@@ -7,7 +7,7 @@ const emptyToUndefined = (value: unknown) => {
   return trimmed.length > 0 ? trimmed : undefined;
 };
 
-export const createPublicationSchema = z
+export const createListingSchema = z
   .object({
     petName: z.string().trim().min(2).max(80),
     ageValue: z.coerce.number().int().min(1).max(3650),
@@ -49,4 +49,4 @@ export const createPublicationSchema = z
     }
   });
 
-export type CreatePublicationInput = z.infer<typeof createPublicationSchema>;
+export type CreateListingInput = z.infer<typeof createListingSchema>;

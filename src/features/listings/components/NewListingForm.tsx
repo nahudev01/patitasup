@@ -9,9 +9,9 @@ import {
   formErrorClass,
   formLabelClass,
   primaryCtaClass,
-} from "../lib/publicationStyles";
+} from "../lib/listingStyles";
 
-type PublicationFormState = {
+type ListingFormState = {
   petName: string;
   ageValue: string;
   ageUnit: "days" | "months" | "years";
@@ -23,14 +23,14 @@ type PublicationFormState = {
   status: "active" | "draft";
 };
 
-type PublicationFieldName = keyof PublicationFormState;
+type ListingFieldName = keyof ListingFormState;
 
 type ApiResponse = {
   message?: string;
-  fieldErrors?: Partial<Record<PublicationFieldName, string[]>>;
+  fieldErrors?: Partial<Record<ListingFieldName, string[]>>;
 };
 
-const initialForm: PublicationFormState = {
+const initialForm: ListingFormState = {
   petName: "",
   ageValue: "",
   ageUnit: "months",
@@ -42,33 +42,33 @@ const initialForm: PublicationFormState = {
   status: "active",
 };
 
-const statusOptions: { value: PublicationFormState["status"]; label: string }[] = [
+const statusOptions: { value: ListingFormState["status"]; label: string }[] = [
   { value: "active", label: "Activa" },
   { value: "draft", label: "Borrador" },
 ];
 
 function getFieldError(
   fieldErrors: ApiResponse["fieldErrors"],
-  fieldName: PublicationFieldName,
+  fieldName: ListingFieldName,
 ) {
   return fieldErrors?.[fieldName]?.[0];
 }
 
-export default function NewPublicationForm() {
+export default function NewListingForm() {
   const router = useRouter();
-  const [form, setForm] = useState<PublicationFormState>(initialForm);
+  const [form, setForm] = useState<ListingFormState>(initialForm);
   const [fieldErrors, setFieldErrors] = useState<ApiResponse["fieldErrors"]>({});
   const [message, setMessage] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   const updateField =
-    (fieldName: PublicationFieldName) =>
+    (fieldName: ListingFieldName) =>
     (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
       setForm((currentForm) => ({ ...currentForm, [fieldName]: event.target.value }));
       setFieldErrors((currentErrors) => ({ ...currentErrors, [fieldName]: undefined }));
     };
 
-  const handleStatusChange = (status: PublicationFormState["status"]) => {
+  const handleStatusChange = (status: ListingFormState["status"]) => {
     setForm((currentForm) => ({ ...currentForm, status }));
     setFieldErrors((currentErrors) => ({ ...currentErrors, status: undefined }));
   };
@@ -79,7 +79,7 @@ export default function NewPublicationForm() {
     setMessage(null);
     setFieldErrors({});
 
-    const response = await fetch("/api/publications", {
+    const response = await fetch("/api/listings", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -103,7 +103,7 @@ export default function NewPublicationForm() {
       return;
     }
 
-    router.push("/mis-publicaciones");
+    router.push("/my-listings");
     router.refresh();
   };
 

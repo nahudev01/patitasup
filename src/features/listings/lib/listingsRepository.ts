@@ -13,7 +13,7 @@ import type { Cat } from "@/features/cats/types";
 import { prisma } from "@/lib/prisma";
 
 import type { Publication, PublicationStatus } from "../types";
-import type { CreatePublicationInput } from "./publicationValidation";
+import type { CreateListingInput } from "./listingValidation";
 
 const dateFormatter = new Intl.DateTimeFormat("es-AR", {
   day: "2-digit",
@@ -37,18 +37,18 @@ const catSexByPrismaSex: Record<PrismaSex, Cat["sex"]> = {
   [PrismaSex.FEMALE]: "female",
 };
 
-const prismaAgeUnitByInput: Record<CreatePublicationInput["ageUnit"], PrismaAgeUnit> = {
+const prismaAgeUnitByInput: Record<CreateListingInput["ageUnit"], PrismaAgeUnit> = {
   days: PrismaAgeUnit.DAYS,
   months: PrismaAgeUnit.MONTHS,
   years: PrismaAgeUnit.YEARS,
 };
 
-const prismaSexByInput: Record<CreatePublicationInput["sex"], PrismaSex> = {
+const prismaSexByInput: Record<CreateListingInput["sex"], PrismaSex> = {
   male: PrismaSex.MALE,
   female: PrismaSex.FEMALE,
 };
 
-const prismaStatusByInput: Record<CreatePublicationInput["status"], PrismaStatus> = {
+const prismaStatusByInput: Record<CreateListingInput["status"], PrismaStatus> = {
   active: PrismaStatus.ACTIVE,
   draft: PrismaStatus.DRAFT,
 };
@@ -71,10 +71,10 @@ function slugify(value: string) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
-  return slug || "publicacion";
+  return slug || "listing";
 }
 
-function buildPublicationSlug(petName: string) {
+function buildListingSlug(petName: string) {
   return `${slugify(petName)}-${randomUUID().replace(/-/g, "").slice(0, 8)}`;
 }
 
@@ -91,11 +91,11 @@ function getFallbackImage(rowId: string) {
   return `/cats/cat${imageNumber}.jpg`;
 }
 
-type PublicationWithAuthor = PrismaPublication & {
+type ListingWithAuthor = PrismaPublication & {
   authorProfile: Pick<Profile, "displayName">;
 };
 
-export function mapPublicationRow(row: PrismaPublication): Publication {
+export function mapListingRow(row: PrismaPublication): Publication {
   return {
     id: row.id,
     petName: row.petName,
@@ -106,7 +106,7 @@ export function mapPublicationRow(row: PrismaPublication): Publication {
   };
 }
 
-export function mapPublicationRowToCat(row: PublicationWithAuthor): Cat {
+export function mapListingRowToCat(row: ListingWithAuthor): Cat {
   return {
     id: row.id,
     slug: row.slug,
@@ -120,7 +120,7 @@ export function mapPublicationRowToCat(row: PublicationWithAuthor): Cat {
   };
 }
 
-export async function listPublicationsForProfile(profileId: string) {
+export async function listListingsForProfile(profileId: string) {
   const rows = await prisma.publication.findMany({
     where: {
       authorProfileId: profileId,
@@ -128,10 +128,10 @@ export async function listPublicationsForProfile(profileId: string) {
     orderBy: [{ createdAt: "desc" }],
   });
 
-  return rows.map(mapPublicationRow);
+  return rows.map(mapListingRow);
 }
 
-export async function listPublishedPublicationCats() {
+export async function listPublishedListingCats() {
   const rows = await prisma.publication.findMany({
     where: {
       status: PrismaStatus.ACTIVE,
@@ -146,10 +146,10 @@ export async function listPublishedPublicationCats() {
     orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
   });
 
-  return rows.map(mapPublicationRowToCat);
+  return rows.map(mapListingRowToCat);
 }
 
-export async function findPublishedPublicationCatBySlug(slug: string) {
+export async function findPublishedListingCatBySlug(slug: string) {
   const row = await prisma.publication.findFirst({
     where: {
       slug,
@@ -164,19 +164,19 @@ export async function findPublishedPublicationCatBySlug(slug: string) {
     },
   });
 
-  return row ? mapPublicationRowToCat(row) : null;
+  return row ? mapListingRowToCat(row) : null;
 }
 
-export async function createPublicationForProfile(
+export async function createListingForProfile(
   profileId: string,
-  input: CreatePublicationInput,
+  input: CreateListingInput,
 ) {
   const status = prismaStatusByInput[input.status];
 
   const row = await prisma.publication.create({
     data: {
       authorProfileId: profileId,
-      slug: buildPublicationSlug(input.petName),
+      slug: buildListingSlug(input.petName),
       petName: input.petName,
       ageValue: input.ageValue,
       ageUnit: prismaAgeUnitByInput[input.ageUnit],
@@ -190,5 +190,5 @@ export async function createPublicationForProfile(
     },
   });
 
-  return mapPublicationRow(row);
+  return mapListingRow(row);
 }
