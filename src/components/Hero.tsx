@@ -29,7 +29,7 @@ const Hero = ({
     <div
       className={
         isHome
-          ? "relative mx-auto flex w-full max-w-5xl flex-col items-center px-4 pt-32 pb-24 text-center sm:px-6 sm:pt-36 sm:pb-28 lg:px-8"
+          ? "relative mx-auto flex w-full max-w-5xl flex-col items-center px-4 pt-14 pb-20 text-center sm:px-6 sm:pt-16 sm:pb-24 lg:px-8 lg:pt-20 lg:pb-28"
           : "relative mx-auto flex w-full max-w-5xl flex-col items-center px-4 pt-10 pb-12 text-center sm:px-6 sm:pt-12 sm:pb-14 lg:px-8"
       }
     >

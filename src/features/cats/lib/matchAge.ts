@@ -10,5 +10,5 @@ export const matchesAgeFilter = (ageLabel: string, filter: AgeFilter): boolean =
   if (filter === "young") return months >= 6 && months < 24;
   if (filter === "adult") return months >= 24 && months < 84;
 
-  return months >= 84; // senior
+  return months >= 84;
 };
